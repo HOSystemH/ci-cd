@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>hello-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <!--    源码的编码方式    -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--    输出的编码方式    -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--    自定义参数,一般用于统一管理版本参数 -->
+        <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
+
+        <!-- swagger 依赖版本管理 start -->
+        <!--    swagger2版本管理    -->
+        <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
+        <!--    swagger-ui版本管理 -->
+        <swagger-bootstrap.version>1.9.6</swagger-bootstrap.version>
+        <!--    guava 版本管理     -->
+        <guava.version>29.0-jre</guava.version>
+        <!-- swagger 依赖版本管理 end -->
+
+        <!--    lombok版本管理    -->
+        <lombok.version>1.18.12</lombok.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.3.7.RELEASE</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!--    指定生成jar包的名称-->
+        <finalName>hello-project-${project.version}</finalName>
+        <plugins>
+            <!--    maven-compiler插件    -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <!--    maven编译参数配置    -->
+                <configuration>
+                    <!--    一般而言,target与source是保持一致的    -->
+                    <!-- 有时候为了让程序能在其他版本的jdk中运行(对于低版本目标jdk,源代码中不能使用低版本jdk中不支持的语法)，会存在target不同于source的情况 -->
+                    <!--    使用指定的 JDK 版本将 java 文件编译为 class 文件(针对编译运行环境)    -->
+                    <source>1.8</source>    <!--    源代码使用的JDK版本    -->
+                    <target>1.8</target>    <!--    需要生成的目标class文件的编译版本    -->
+                    <!--    Java编译器的-encoding参数    -->
+                    <!--    编译的编码方式    -->
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!--    spring-boot-maven-plugin插件在打Jar包时会引入依赖包    -->
+            <!--    会打包成一个可以直接运行的 JAR 文件,使用“Java -jar”命令就可以直接运行,简化了应用的部署,只需要安装 JRE 就可运行     -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <!--    mainClass 配置的是springboot程序的启动入口类    -->
+                <!--注释掉这个否则生成的jar包会显示 Exception in thread "main" java.lang.ClassNotFoundException: com.github.hosystem.scaffold.WebDemoApplication-->
+                <!--<configuration>-->
+                <!--    <mainClass>com.github.hosystem.scaffold.WebDemoApplication</mainClass>-->
+                <!--</configuration>-->
+                <!--    关闭mainClass标签,否则运行 子module jar包时会出现 notfound WebDemoApplication    -->
+                <!--<configuration>-->
+                <!--    <mainClass>com.github.hosystem.scaffold.WebDemoApplication</mainClass>-->
+                <!--</configuration>-->
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
